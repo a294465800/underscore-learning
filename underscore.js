@@ -214,7 +214,7 @@
   };
 
   // Create a reducing function iterating left or right.
-  // dir 是方向， 0 ==> 从左往右   -1 ==> 从右往左
+  // dir 是方向， 1 ==> 从左往右   -1 ==> 从右往左
   var createReduce = function(dir) {
     // Wrap code that reassigns argument variables in a separate function than
     // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
@@ -247,6 +247,7 @@
   _.reduceRight = _.foldr = createReduce(-1);
 
   // Return the first value which passes a truth test. Aliased as `detect`.
+  // 返回符合 对应函数 的首个值，支持 Array 和 ArrayLike
   _.find = _.detect = function(obj, predicate, context) {
     var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
     var key = keyFinder(obj, predicate, context);
@@ -255,6 +256,7 @@
 
   // Return all the elements that pass a truth test.
   // Aliased as `select`.
+  // 返回符合 对应函数 的所有值
   _.filter = _.select = function(obj, predicate, context) {
     var results = [];
     predicate = cb(predicate, context);
@@ -265,12 +267,14 @@
   };
 
   // Return all the elements for which a truth test fails.
+  // 返回不符合 对应函数 的所有值
   _.reject = function(obj, predicate, context) {
     return _.filter(obj, _.negate(cb(predicate)), context);
   };
 
   // Determine whether all of the elements match a truth test.
   // Aliased as `all`.
+  // 当全部值都为真时，返回 true 。否则返回 false
   _.every = _.all = function(obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = !isArrayLike(obj) && _.keys(obj),
@@ -284,6 +288,7 @@
 
   // Determine if at least one element in the object matches a truth test.
   // Aliased as `any`.
+  // 至少一个为真时，返回 true 。否则返回 false
   _.some = _.any = function(obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = !isArrayLike(obj) && _.keys(obj),
